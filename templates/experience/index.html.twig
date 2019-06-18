@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Title</th>
                 <th>Description</th>
+                <th>State</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td>{{ experience.id }}</td>
                 <td>{{ experience.Title }}</td>
                 <td>{{ experience.Description }}</td>
+                <td>{{ experience.State | join }}</td>
                 <td>
                     <a href="{{ path('experience_show', {'id': experience.id}) }}">show</a>
                     <a href="{{ path('experience_edit', {'id': experience.id}) }}">edit</a>

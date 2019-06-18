@@ -1,4 +1,15 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
+
+   {% if workflow_can(experience, 'feedback') %}
+       <a href="{{ url('experience_ask_feedback', {'id': experience.id}) }}">Ask feedback</a>
+   {% endif %}
+    {% if workflow_can(experience, 'approve') %}
+        <a href="{{ url('experience_approve', {'id': experience.id}) }}">Approve</a>
+    {% endif %}
+    {% if workflow_can(experience, 'publish') %}
+        <a href="{{ url('experience_publish', {'id': experience.id}) }}">Publish</a>
+    {% endif %}
+
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

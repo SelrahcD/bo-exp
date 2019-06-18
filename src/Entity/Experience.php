@@ -26,6 +26,11 @@ class Experience
      */
     private $Description;
 
+    /**
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    protected $state;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,4 +59,15 @@ class Experience
 
         return $this;
     }
+
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
 }

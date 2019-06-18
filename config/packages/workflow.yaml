@@ -1,0 +1,24 @@
+framework:
+    workflows:
+        experiences:
+            marking_store:
+                type: multiple_state
+                arguments:
+                    - state
+            supports:
+                -  App\Entity\Experience
+            places:
+                - new
+                - needs_review
+                - reviewed
+                - published
+            transitions:
+                feedback:
+                    from: [new, published, reviewed]
+                    to: needs_review
+                approve:
+                    from: [new, needs_review]
+                    to:   reviewed
+                publish:
+                    from: reviewed
+                    to:   published
