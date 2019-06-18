@@ -1,0 +1,16 @@
+version: "3.4"
+
+services:
+    experiences_db:
+        image: postgres
+        volumes:
+            - experiences-db-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_PASSWORD: evaneos_com
+            POSTGRES_USER:     evaneos_com
+            POSTGRES_DB:       experiences
+        ports:
+          - "9956:5432"
+
+volumes:
+    experiences-db-data:
