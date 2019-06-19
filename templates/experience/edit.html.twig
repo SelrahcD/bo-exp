@@ -7,6 +7,16 @@
 
     {{ include('experience/_form.html.twig', {'button_label': 'Update'}) }}
 
+    {% if workflow_can(experience, 'feedback') %}
+        <a href="{{ url('experience_ask_feedback', {'id': experience.id}) }}">Ask feedback</a>
+    {% endif %}
+    {% if workflow_can(experience, 'approve') %}
+        <a href="{{ url('experience_approve', {'id': experience.id}) }}">Approve</a>
+    {% endif %}
+    {% if workflow_can(experience, 'publish') %}
+        <a href="{{ url('experience_publish', {'id': experience.id}) }}">Publish</a>
+    {% endif %}
+
     <a href="{{ path('experience_index') }}">back to list</a>
 
     {{ include('experience/_delete_form.html.twig') }}
