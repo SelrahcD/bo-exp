@@ -111,6 +111,9 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "symfony/browser-kit": {
+        "version": "v4.3.1"
+    },
     "symfony/cache": {
         "version": "v4.3.1"
     },
@@ -133,6 +136,9 @@
             "config/bootstrap.php"
         ]
     },
+    "symfony/css-selector": {
+        "version": "v4.3.1"
+    },
     "symfony/debug": {
         "version": "v4.3.1"
     },
@@ -140,6 +146,9 @@
         "version": "v4.3.1"
     },
     "symfony/doctrine-bridge": {
+        "version": "v4.3.1"
+    },
+    "symfony/dom-crawler": {
         "version": "v4.3.1"
     },
     "symfony/dotenv": {
@@ -239,6 +248,9 @@
     "symfony/process": {
         "version": "v4.3.1"
     },
+    "symfony/profiler-pack": {
+        "version": "v1.0.4"
+    },
     "symfony/property-access": {
         "version": "v4.3.1"
     },
@@ -257,10 +269,28 @@
             "config/routes.yaml"
         ]
     },
+    "symfony/security-bundle": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "9a2034eca6d83d9cda632014e06995b8d9d9fd09"
+        },
+        "files": [
+            "config/packages/security.yaml"
+        ]
+    },
     "symfony/security-core": {
         "version": "v4.3.1"
     },
     "symfony/security-csrf": {
+        "version": "v4.3.1"
+    },
+    "symfony/security-guard": {
+        "version": "v4.3.1"
+    },
+    "symfony/security-http": {
         "version": "v4.3.1"
     },
     "symfony/service-contracts": {
@@ -302,8 +332,25 @@
             "config/packages/validator.yaml"
         ]
     },
+    "symfony/var-dumper": {
+        "version": "v4.3.1"
+    },
     "symfony/var-exporter": {
         "version": "v4.3.1"
+    },
+    "symfony/web-profiler-bundle": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "6bdfa1a95f6b2e677ab985cd1af2eae35d62e0f6"
+        },
+        "files": [
+            "config/packages/dev/web_profiler.yaml",
+            "config/packages/test/web_profiler.yaml",
+            "config/routes/dev/web_profiler.yaml"
+        ]
     },
     "symfony/web-server-bundle": {
         "version": "3.3",

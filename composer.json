@@ -12,6 +12,7 @@
         "symfony/form": "4.3.*",
         "symfony/framework-bundle": "4.3.*",
         "symfony/orm-pack": "^1.0",
+        "symfony/security-bundle": "4.3.*",
         "symfony/security-csrf": "4.3.*",
         "symfony/twig-bundle": "4.3.*",
         "symfony/validator": "4.3.*",
@@ -64,7 +65,10 @@
         }
     },
     "require-dev": {
+        "symfony/browser-kit": "4.3.*",
+        "symfony/css-selector": "4.3.*",
         "symfony/maker-bundle": "^1.11",
+        "symfony/profiler-pack": "^1.0",
         "symfony/web-server-bundle": "4.3.*"
     }
 }
