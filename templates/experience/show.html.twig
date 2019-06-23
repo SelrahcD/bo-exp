@@ -22,6 +22,9 @@
         </tbody>
     </table>
 
+    {% for transition in workflow_marked_places(experience) %}
+        {{ transition }}
+    {% endfor %}
     <a href="{{ path('experience_index') }}">back to list</a>
 
     <a href="{{ path('experience_edit', {'id': experience.id}) }}">edit</a>

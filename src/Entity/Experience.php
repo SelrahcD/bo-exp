@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +32,11 @@ class Experience
      * @ORM\Column(type="json_array", nullable=true)
      */
     protected $state;
+
+
+    public function __construct()
+    {
+    }
 
     public function getId(): ?int
     {
@@ -69,5 +76,4 @@ class Experience
     {
         return $this->state;
     }
-
 }

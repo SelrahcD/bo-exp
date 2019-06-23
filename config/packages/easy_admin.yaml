@@ -1,0 +1,16 @@
+easy_admin:
+    entities:
+        # List the entity class name you want to manage
+        Activity:
+            class: App\Entity\Activity
+        Experience:
+            class: App\Entity\Experience
+            edit:
+                fields:
+                    - id
+                    - title
+                    - description
+        Pony:
+            class: App\Entity\Pony
+            list:
+                batch_actions: ['delete']

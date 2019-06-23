@@ -20,6 +20,7 @@ class ActivityControllerTest extends WebTestCase
     */
     private $manager;
 
+
     protected function setUp(): void
     {
         static::createClient();
@@ -29,18 +30,14 @@ class ActivityControllerTest extends WebTestCase
         $this->activityRepository->clear();
     }
 
-    /**
-     * @group DB
-     */
     public function testListAll()
     {
         for($i = 0; $i < self::GENERATED_ELEMENTS; $i++)
         {
-            $activity = (new Activity())
-                ->setTitle('A title')
-                ->setDescription('A description')
-                ->setLocation(17)
-            ;
+            $activity = new Activity();
+            $activity->setTitle('Title');
+            $activity->setDescription('A description');
+            $activity->setLocation(1);
 
             $this->manager->persist($activity);
         }
@@ -54,16 +51,12 @@ class ActivityControllerTest extends WebTestCase
         $this->assertEquals(self::GENERATED_ELEMENTS, $crawler->filter('tbody > tr')->count());
     }
 
-    /**
-    * @group DB
-    */
     public function testShowOne() {
 
-        $activity = (new Activity())
-                    ->setTitle('A title')
-                    ->setDescription('A description')
-                    ->setLocation(17)
-                ;
+        $activity = new Activity();
+        $activity->setTitle('Title');
+        $activity->setDescription('A description');
+        $activity->setLocation(1);
 
         $this->manager->persist($activity);
 
@@ -75,9 +68,6 @@ class ActivityControllerTest extends WebTestCase
         $this->assertSame(200, $client->getResponse()->getStatusCode());
     }
 
-    /**
-    * @group DB
-    */
     public function testCreateOne() {
 
         $client = static::createClient();
@@ -85,11 +75,13 @@ class ActivityControllerTest extends WebTestCase
 
         $createForm = $crawler->selectButton('Save')->form();
 
-        $createForm->setValues([
-                    'activity[title]' => 'New title',
-                    'activity[Description]' => 'New description',
-                    'activity[Location]' => 19,
-                ]);
+        $createForm->setValues(
+            [
+                'activity[title]' => 'A title',
+                'activity[Description]' => 'A description',
+                'activity[Location]' => 17,
+            ]
+        );
 
         $client->submit($createForm);
 
@@ -100,16 +92,12 @@ class ActivityControllerTest extends WebTestCase
         $this->assertEquals(1, $this->activityRepository->count([]));
     }
 
-    /**
-    * @group DB
-    */
     public function testUpdateOne() {
 
-        $activity = (new Activity())
-                    ->setTitle('A title')
-                    ->setDescription('A description')
-                    ->setLocation(17)
-                ;
+        $activity = new Activity();
+        $activity->setTitle('Title');
+        $activity->setDescription('A description');
+        $activity->setLocation(1);
 
         $this->manager->persist($activity);
 
@@ -120,30 +108,28 @@ class ActivityControllerTest extends WebTestCase
 
         $updateForm = $crawler->selectButton('Update')->form();
 
-        $updateForm->setValues([
-                    'activity[title]' => 'New title',
-                    'activity[Description]' => 'New description',
-                    'activity[Location]' => 10,
-                ]);
+        $updateForm->setValues(
+            [
+                'activity[title]' => 'A new title',
+                'activity[Description]' => 'A new description',
+                'activity[Location]' => 18,
+            ]
+        );
 
         $client->submit($updateForm);
 
         $client->followRedirect();
+        $crawler = $client->getCrawler();
 
         $this->assertSame(200, $client->getResponse()->getStatusCode());
     }
 
-    /**
-    * @group DB
-    */
     public function testDeleteOne() {
 
-        $activity = (new Activity())
-                    ->setTitle('A title')
-                    ->setDescription('A description')
-                    ->setLocation(17)
-                ;
-
+        $activity = new Activity();
+        $activity->setTitle('Title');
+        $activity->setDescription('A description');
+        $activity->setLocation(1);
 
         $this->manager->persist($activity);
 

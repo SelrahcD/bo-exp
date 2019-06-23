@@ -1,0 +1,4 @@
+services:
+
+     Symfony\Bundle\MakerBundle\Doctrine\DoctrineHelper:
+          alias: maker.doctrine_helper

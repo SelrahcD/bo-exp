@@ -2,18 +2,18 @@
 
 namespace App\Tests;
 
-use App\Repository\ActivityRepository;
-use App\Entity\Activity;
+use App\Repository\PonyRepository;
+use App\Entity\Pony;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class ActivityControllerTest extends WebTestCase
+class PonyControllerTest extends WebTestCase
 {
     const GENERATED_ELEMENTS = 3;
 
     /**
-     * @var ActivityRepository     */
-    private $activityRepository;
+     * @var PonyRepository     */
+    private $ponyRepository;
 
     /**
     * @var ObjectManager
@@ -24,9 +24,9 @@ class ActivityControllerTest extends WebTestCase
     {
         static::createClient();
         $container = self::$container;
-        $this->activityRepository = $container->get(ActivityRepository::class);
+        $this->ponyRepository = $container->get(PonyRepository::class);
         $this->manager = $container->get('doctrine.orm.default_entity_manager');
-        $this->activityRepository->clear();
+        $this->ponyRepository->clear();
     }
 
     /**
@@ -36,19 +36,18 @@ class ActivityControllerTest extends WebTestCase
     {
         for($i = 0; $i < self::GENERATED_ELEMENTS; $i++)
         {
-            $activity = (new Activity())
-                ->setTitle('A title')
-                ->setDescription('A description')
-                ->setLocation(17)
+            $pony = (new Pony())
+                ->setName('Eole')
+                ->setBirthdate(new \DateTimeImmutable('2015-06-06'))
             ;
 
-            $this->manager->persist($activity);
+            $this->manager->persist($pony);
         }
 
         $this->manager->flush();
 
         $client = static::createClient();
-        $crawler = $client->request('GET', '/activity/');
+        $crawler = $client->request('GET', '/pony/');
 
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(self::GENERATED_ELEMENTS, $crawler->filter('tbody > tr')->count());
@@ -59,18 +58,17 @@ class ActivityControllerTest extends WebTestCase
     */
     public function testShowOne() {
 
-        $activity = (new Activity())
-                    ->setTitle('A title')
-                    ->setDescription('A description')
-                    ->setLocation(17)
+        $pony = (new Pony())
+                    ->setName('Eole')
+                    ->setBirthdate(new \DateTimeImmutable('2015-06-06'))
                 ;
 
-        $this->manager->persist($activity);
+        $this->manager->persist($pony);
 
         $this->manager->flush();
 
         $client = static::createClient();
-        $client->request('GET', '/activity/'. $activity->getId());
+        $client->request('GET', '/pony/'. $pony->getId());
 
         $this->assertSame(200, $client->getResponse()->getStatusCode());
     }
@@ -81,14 +79,15 @@ class ActivityControllerTest extends WebTestCase
     public function testCreateOne() {
 
         $client = static::createClient();
-        $crawler = $client->request('GET', '/activity/new');
+        $crawler = $client->request('GET', '/pony/new');
 
         $createForm = $crawler->selectButton('Save')->form();
 
         $createForm->setValues([
-                    'activity[title]' => 'New title',
-                    'activity[Description]' => 'New description',
-                    'activity[Location]' => 19,
+                    'pony[name]' => 'Griotte',
+                    'pony[birthdate][date][year]' => 2016,
+                    'pony[birthdate][date][month]' => 8,
+                    'pony[birthdate][date][day]' => 6,
                 ]);
 
         $client->submit($createForm);
@@ -97,7 +96,7 @@ class ActivityControllerTest extends WebTestCase
         $crawler = $client->getCrawler();
 
         $this->assertEquals(1, $crawler->filter('tbody > tr')->count());
-        $this->assertEquals(1, $this->activityRepository->count([]));
+        $this->assertEquals(1, $this->ponyRepository->count([]));
     }
 
     /**
@@ -105,25 +104,25 @@ class ActivityControllerTest extends WebTestCase
     */
     public function testUpdateOne() {
 
-        $activity = (new Activity())
-                    ->setTitle('A title')
-                    ->setDescription('A description')
-                    ->setLocation(17)
+        $pony = (new Pony())
+                    ->setName('Eole')
+                    ->setBirthdate(new \DateTimeImmutable('2015-06-06'))
                 ;
 
-        $this->manager->persist($activity);
+        $this->manager->persist($pony);
 
         $this->manager->flush();
 
         $client = static::createClient();
-        $crawler = $client->request('GET', '/activity/'. $activity->getId() . '/edit');
+        $crawler = $client->request('GET', '/pony/'. $pony->getId() . '/edit');
 
         $updateForm = $crawler->selectButton('Update')->form();
 
         $updateForm->setValues([
-                    'activity[title]' => 'New title',
-                    'activity[Description]' => 'New description',
-                    'activity[Location]' => 10,
+                    'pony[name]' => 'Griotte',
+                    'pony[birthdate][date][year]' => 2016,
+                    'pony[birthdate][date][month]' => 8,
+                    'pony[birthdate][date][day]' => 6,
                 ]);
 
         $client->submit($updateForm);
@@ -138,23 +137,22 @@ class ActivityControllerTest extends WebTestCase
     */
     public function testDeleteOne() {
 
-        $activity = (new Activity())
-                    ->setTitle('A title')
-                    ->setDescription('A description')
-                    ->setLocation(17)
+        $pony = (new Pony())
+                    ->setName('Eole')
+                    ->setBirthdate(new \DateTimeImmutable('2015-06-06'))
                 ;
 
 
-        $this->manager->persist($activity);
+        $this->manager->persist($pony);
 
         $this->manager->flush();
 
         $client = static::createClient();
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('delete'.$activity->getId());
-        $client->request('DELETE', '/activity/'. $activity->getId(), [
+        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('delete'.$pony->getId());
+        $client->request('DELETE', '/pony/'. $pony->getId(), [
             '_token' => $csrfToken,
         ]);
 
-        $this->assertNull($this->activityRepository->find($activity->getId()));
+        $this->assertNull($this->ponyRepository->find($pony->getId()));
     }
 }

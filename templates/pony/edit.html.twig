@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Pony{% endblock %}
+
+{% block body %}
+    <h1>Edit Pony</h1>
+
+    {{ include('pony/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('pony_index') }}">back to list</a>
+
+    {{ include('pony/_delete_form.html.twig') }}
+{% endblock %}

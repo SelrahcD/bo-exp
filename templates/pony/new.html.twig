@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Pony{% endblock %}
+
+{% block body %}
+    <h1>Create new Pony</h1>
+
+    {{ include('pony/_form.html.twig') }}
+
+    <a href="{{ path('pony_index') }}">back to list</a>
+{% endblock %}
