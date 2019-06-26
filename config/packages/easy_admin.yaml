@@ -1,16 +1,39 @@
 easy_admin:
+    site_name: "Experiences back-office"
+    design:
+        brand_color: '#1ABC9C'
+        menu:
+            - {label: 'Offer', icon: 'users'}
+            - 'Experience'
+            - 'Activity'
+            - 'Pony'
+            - 'Destination'
     entities:
         # List the entity class name you want to manage
-        Activity:
-            class: App\Entity\Activity
         Experience:
             class: App\Entity\Experience
+            list:
+                actions: ['publish']
+                filters:
+                    - { property: 'Title' }
+                    - { property: 'id' }
             edit:
                 fields:
                     - id
                     - title
                     - description
+                actions:
+                    - { name: 'experience_publish', label: 'Publish', type: 'route' }
+        Activity:
+            class: App\Entity\Activity
         Pony:
             class: App\Entity\Pony
             list:
                 batch_actions: ['delete']
+                filters:
+                    - property: 'birthdate'
+                      type: 'App\Form\DateCalendarFilterType'
+        Destination:
+            class: App\Entity\Destination
+            controller: App\Controller\DestinationController
+            disabled_actions: ['new', 'edit', 'delete']
