@@ -5,6 +5,7 @@ easy_admin:
         menu:
             - {label: 'Offer', icon: 'users'}
             - 'Experience'
+#            - 'ExperienceVersion'
             - 'Activity'
             - 'Pony'
             - 'Destination'
@@ -12,18 +13,47 @@ easy_admin:
         # List the entity class name you want to manage
         Experience:
             class: App\Entity\Experience
+            Controller: App\Controller\ExperienceController
             list:
-                actions: ['publish']
+                fields:
+                  - id
+                  - title
+                  - slug
+                  - versions
+                actions:
+                    - show
                 filters:
                     - { property: 'Title' }
                     - { property: 'id' }
+            new:
+              fields:
+                - title
             edit:
                 fields:
                     - id
                     - title
-                    - description
+                    - { property: 'slug', type_options: { disabled: true } }
                 actions:
                     - { name: 'experience_publish', label: 'Publish', type: 'route' }
+            show:
+              fields:
+                - id
+                - title
+                - slug
+                - state
+                - { property: 'versions', template: 'experience/_versions_fields.html.twig', label: '' }
+
+        ExperienceVersion:
+            class: App\Entity\ExperienceVersion
+            show:
+                fields:
+                    - version
+                    - title
+                    - description
+            edit:
+                fields:
+                    - title
+                    - description
         Activity:
             class: App\Entity\Activity
         Pony:

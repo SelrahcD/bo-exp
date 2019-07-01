@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Experience
 {
+    const NO_SLUG = '';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -24,18 +25,24 @@ class Experience
     private $Title;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      */
-    private $Description;
+    private $slug = self::NO_SLUG;
 
     /**
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $state;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ExperienceVersion", mappedBy="experience", orphanRemoval=true)
+     */
+    private $versions;
 
 
     public function __construct()
     {
+        $this->versions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -48,9 +55,13 @@ class Experience
         return $this->Title;
     }
 
-    public function setTitle(string $Title): self
+    public function setTitle(string $title): self
     {
-        $this->Title = $Title;
+        $this->Title = $title;
+
+        if($this->slug === self::NO_SLUG) {
+            $this->slug = implode('-', explode(' ', strtolower($title)));
+        }
 
         return $this;
     }
@@ -76,4 +87,55 @@ class Experience
     {
         return $this->state;
     }
+
+    /**
+     * @return Collection|ExperienceVersion[]
+     */
+    public function getVersions(): Collection
+    {
+        return $this->versions;
+    }
+
+    public function addVersion(ExperienceVersion $version): self
+    {
+        if (!$this->versions->contains($version)) {
+            $this->versions[] = $version;
+            $version->setExperience($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVersion(ExperienceVersion $version): self
+    {
+        if ($this->versions->contains($version)) {
+            $this->versions->removeElement($version);
+            // set the owning side to null (unless already changed)
+            if ($version->getExperience() === $this) {
+                $version->setExperience(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function slug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug(string $slug)
+    {
+        $this->slug = $slug;
+    }
+
+    public function __toString()
+    {
+        return $this->Title . '(' . $this->id . ')';
+    }
+
+
 }
