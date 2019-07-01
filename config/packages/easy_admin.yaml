@@ -12,8 +12,10 @@ easy_admin:
         # List the entity class name you want to manage
         Experience:
             class: App\Entity\Experience
+            controller: App\Controller\ExperienceController
+            templates:
+                edit: 'experience/edit.html.twig'
             list:
-                actions: ['publish']
                 filters:
                     - { property: 'Title' }
                     - { property: 'id' }
@@ -23,7 +25,10 @@ easy_admin:
                     - title
                     - description
                 actions:
-                    - { name: 'experience_publish', label: 'Publish', type: 'route' }
+                    - { name: 'experience_publish', type: 'route', template: 'experience/_publish_action.html.twig' }
+                    - { name: 'experience_ask_feedback', type: 'route', template: 'experience/_ask_feedback_action.html.twig' }
+                    - { name: 'experience_approve', type: 'route', template: 'experience/_approve_action.html.twig' }
+
         Activity:
             class: App\Entity\Activity
         Pony:
@@ -36,4 +41,4 @@ easy_admin:
         Destination:
             class: App\Entity\Destination
             controller: App\Controller\DestinationController
-            disabled_actions: ['new', 'edit', 'delete']
+            disabled_actions: ['new', 'delete']

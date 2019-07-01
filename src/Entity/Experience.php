@@ -29,9 +29,9 @@ class Experience
     private $Description;
 
     /**
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $state;
+    protected $state = 'new';
 
 
     public function __construct()

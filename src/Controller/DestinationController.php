@@ -7,6 +7,7 @@ use App\Entity\Destination;
 use App\Repository\DestinationRepository;
 use Doctrine\DBAL\Connection;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminFormType;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 
@@ -30,8 +31,6 @@ final class DestinationController extends EasyAdminController
         $sortDirection = null,
         $dqlFilter = null
     ) {
-
-
         $query = $this->connection->createQueryBuilder()
             ->from('experience')
             ->select('id, title as name');
@@ -75,6 +74,11 @@ final class DestinationController extends EasyAdminController
             $query->execute()->fetchAll()
                                                )));
 
+    }
+
+    protected function createEntityFormBuilder($entity, $view)
+    {
+        return $this->createFormBuilder();
     }
 
 }
