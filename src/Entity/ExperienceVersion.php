@@ -123,6 +123,16 @@ class ExperienceVersion
 
     public function canBePromotedAsLiveVersion(): bool
     {
+        return $this->isAccepted() && !$this->isTheSelectedVersion();
+    }
+
+    public function isAccepted(): bool
+    {
         return $this->state === 'accepted';
+    }
+
+    public function isTheSelectedVersion(): bool
+    {
+        return $this->experience->selectedVersion() == $this;
     }
 }

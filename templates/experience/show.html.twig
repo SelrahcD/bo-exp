@@ -35,6 +35,7 @@
                 <th class="integer"><span>Version</span></th>
                 <th class="virtual text"><span>Title</span></th>
                 <th class="virtual text"><span>State</span></th>
+                <th class="virtual boolean"><span>Is the selected version</span></th>
                 <th>
                     <span class="sr-only">Actions</span>
                 </th>
@@ -52,10 +53,19 @@
                     <td class="virtual text">
                         {{ version.state }}
                     </td>
+                    <td class="virtual boolean">
+                        {% include  '@!EasyAdmin/default/field_boolean.html.twig' with {value: version.isTheSelectedVersion}%}
+                    </td>
 
                     <td class="actions">
                         {% if version.canBePromotedAsLiveVersion %}
-                            <a class="action-promote" title="" href="{{ url('easyadmin', {'action': 'edit', 'id': version.id, 'entity':'ExperienceVersion'}) }}">Promote as live version</a>
+                            <form method="post" action="{{ path('experience_promote_version', {'id': entity.id, 'versionId': version.id}) }}" class="d-none" id="experience_promote_version_{{ version.id }}">
+                                <input type="hidden" name="_method" value="PUT">
+                                <input type="hidden" name="_token" value="{{ csrf_token('promote' ~ entity.id ~ version.id) }}">
+                            </form>
+                            <button form="experience_promote_version_{{ version.id }}" class="btn btn-link">
+                                Promote as live version
+                            </button>
                         {% endif%}
                         {% if version.canBeEdited %}
                             <a class="action-edit" title="" href="{{ url('easyadmin', {'action': 'edit', 'id': version.id, 'entity':'ExperienceVersion'}) }}">Edit</a>
@@ -97,6 +107,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 

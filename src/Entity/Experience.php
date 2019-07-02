@@ -39,6 +39,11 @@ class Experience
      */
     private $versions;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ExperienceVersion", cascade={"persist", "remove"})
+     */
+    private $selectedVersion;
+
 
     public function __construct()
     {
@@ -142,5 +147,15 @@ class Experience
         return new ExperienceVersion($this, $this->versions->count() + 1, $this->Title);
     }
 
+    public function promoteVersion(ExperienceVersion $version)
+    {
+        if($version->isAccepted()) {
+            $this->selectedVersion = $version;
+        }
+    }
 
+    public function selectedVersion(): ?ExperienceVersion
+    {
+        return $this->selectedVersion;
+    }
 }

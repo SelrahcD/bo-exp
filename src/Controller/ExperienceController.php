@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Experience;
+use App\Entity\ExperienceVersion;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Workflow\Registry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+
 
 /**
  * @Route("/experience")
@@ -92,5 +96,26 @@ class ExperienceController extends EasyAdminController
         return $this->redirectToRoute('experience_index', [
             'id' => $experience->getId(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/promote/{versionId}", name="experience_promote_version", methods={"PUT"})
+     * @Entity("version", expr="repository.find(versionId)")
+     */
+    public function experiencePromoteVersion(Experience $experience, ExperienceVersion $version, Request $request): Response
+    {
+        if ($this->isCsrfTokenValid('promote'.$experience->getId().$version->getId(), $request->request->get('_token'))) {
+
+            $experience->promoteVersion($version);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('easyadmin', array(
+            'action' => 'show',
+            'id' => $experience->getId(),
+            'entity' => 'Experience',
+        ));
     }
 }
