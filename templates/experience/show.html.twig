@@ -1,33 +1,106 @@
-{% extends 'base.html.twig' %}
+{% extends '@!EasyAdmin/default/show.html.twig' %}
 
-{% block title %}Experience{% endblock %}
+{% block main %}
+    <div class="container-fluid">
 
-{% block body %}
-    <h1>Experience</h1>
+    <div class="row">
+        <div class="form-horizontal col">
+            {% block show_fields %}
+                {% for field, metadata in fields %}
+                    {% block show_field %}
+                        <div class="form-group field-{{ metadata.type|default('default')|lower }} {{ metadata.css_class|default('') }}">
+                            <label class="control-label">
+                                {{ metadata.label|trans(_trans_parameters)|raw }}
+                            </label>
+                            <div class="form-widget">
+                                <div class="form-control">
+                                    {{ easyadmin_render_field_for_show_view(_entity_config.name, entity, metadata) }}
+                                </div>
 
-    <table class="table">
-        <tbody>
+                                {% if metadata.help|default('') != '' %}
+                                    <small class="form-help"><i class="fa fa-fw fa-info-circle"></i> {{ metadata.help|trans|raw }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endblock %}
+                {% endfor %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <div class="row content-body">
+        <table class="table datagrid">
+            <thead>
             <tr>
-                <th>Id</th>
-                <td>{{ experience.id }}</td>
+                <th class="integer"><span>Version</span></th>
+                <th class="virtual text"><span>Title</span></th>
+                <th class="virtual text"><span>State</span></th>
+                <th>
+                    <span class="sr-only">Actions</span>
+                </th>
             </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ experience.Title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ experience.Description }}</td>
-            </tr>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for version in entity.versions %}
+                <tr>
+                    <td scope="col" class="integer">
+                        {{ version.version }}
+                    </td>
+                    <td class="virtual text">
+                        {{ version.title }}
+                    </td>
+                    <td class="virtual text">
+                        {{ version.state }}
+                    </td>
 
-    {% for transition in workflow_marked_places(experience) %}
-        {{ transition }}
-    {% endfor %}
-    <a href="{{ path('experience_index') }}">back to list</a>
+                    <td class="actions">
+                        {% if version.canBePromotedAsLiveVersion %}
+                            <a class="action-promote" title="" href="{{ url('easyadmin', {'action': 'edit', 'id': version.id, 'entity':'ExperienceVersion'}) }}">Promote as live version</a>
+                        {% endif%}
+                        {% if version.canBeEdited %}
+                            <a class="action-edit" title="" href="{{ url('easyadmin', {'action': 'edit', 'id': version.id, 'entity':'ExperienceVersion'}) }}">Edit</a>
+                        {% else %}
+                            <a class="action-show" title="" href="{{ url('easyadmin', {'action': 'show', 'id': version.id, 'entity':'ExperienceVersion'}) }}">Show</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2" class="text-center">No version available</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <a href="{{ path('experience_edit', {'id': experience.id}) }}">edit</a>
+    <div class="row">
+        <div class="col">
 
-    {{ include('experience/_delete_form.html.twig') }}
+        <section class="content-footer">
+            <div class="form-actions">
+                {% block item_actions %}
+                    {% set _show_actions = easyadmin_get_actions_for_show_item(_entity_config.name) %}
+                    {% set _request_parameters = app.request.query.all %}
+
+                    {{ include('@EasyAdmin/default/includes/_actions.html.twig', {
+                        actions: _show_actions,
+                        entity_config: _entity_config,
+                        request_parameters: _request_parameters,
+                        translation_domain: _entity_config.translation_domain,
+                        trans_parameters: _trans_parameters,
+                        item_id: _entity_id,
+                        item: entity
+                    }, with_context = false) }}
+                {% endblock item_actions %}
+            </div>
+        </section>
+        </div>
+    </div>
+</div>
+
+
+
+
 {% endblock %}
+
+

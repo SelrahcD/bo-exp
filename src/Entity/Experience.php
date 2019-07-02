@@ -137,5 +137,10 @@ class Experience
         return $this->Title . '(' . $this->id . ')';
     }
 
+    public function createNewVersion(): ExperienceVersion
+    {
+        return new ExperienceVersion($this, $this->versions->count() + 1, $this->Title);
+    }
+
 
 }

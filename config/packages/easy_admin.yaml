@@ -14,6 +14,8 @@ easy_admin:
         Experience:
             class: App\Entity\Experience
             Controller: App\Controller\ExperienceController
+            templates:
+                show: 'experience/show.html.twig'
             list:
                 fields:
                   - id
@@ -33,18 +35,19 @@ easy_admin:
                     - id
                     - title
                     - { property: 'slug', type_options: { disabled: true } }
-                actions:
-                    - { name: 'experience_publish', label: 'Publish', type: 'route' }
             show:
               fields:
                 - id
                 - title
                 - slug
-                - state
-                - { property: 'versions', template: 'experience/_versions_fields.html.twig', label: '' }
-
+              actions:
+                - { name: 'experience_add_version', type: 'route', label: 'Add version'}
         ExperienceVersion:
             class: App\Entity\ExperienceVersion
+            templates:
+                edit: 'experienceVersion/edit.html.twig'
+            disabled_actions:
+                ['delete', 'list']
             show:
                 fields:
                     - version
@@ -54,6 +57,11 @@ easy_admin:
                 fields:
                     - title
                     - description
+                actions:
+                    - { name: 'request_feedback', template: 'experienceVersion/_request_feedback_action.html.twig' }
+                    - { name: 'approve', template: 'experienceVersion/_approve_action.html.twig', icon: 'fa-check' }
+                    - { name: 'reject', template: 'experienceVersion/_reject_action.html.twig'}
+
         Activity:
             class: App\Entity\Activity
         Pony:

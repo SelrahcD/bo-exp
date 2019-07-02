@@ -1,0 +1,20 @@
+{% extends '@!EasyAdmin/default/edit.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+
+    <form id="experience_version_request_feedback" method="post" action="{{ path('experience_version_request_feedback', {'id': entity.id}) }}">
+        <input type="hidden" name="_method" value="PUT">
+        <input type="hidden" name="_token" value="{{ csrf_token('request_feedback' ~ entity.id) }}">
+    </form>
+
+    <form id="experience_version_approve" method="post" action="{{ path('experience_version_approve', {'id': entity.id}) }}">
+        <input type="hidden" name="_method" value="PUT">
+        <input type="hidden" name="_token" value="{{ csrf_token('approve' ~ entity.id) }}">
+    </form>
+
+    <form id="experience_version_reject" method="post" action="{{ path('experience_version_reject', {'id': entity.id}) }}">
+        <input type="hidden" name="_method" value="PUT">
+        <input type="hidden" name="_token" value="{{ csrf_token('reject' ~ entity.id) }}">
+    </form>
+{% endblock %}

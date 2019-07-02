@@ -38,11 +38,16 @@ class ExperienceVersion
     private $experience;
 
     /**
-     * ExperienceVersion constructor.
+     * @ORM\Column(type="string", nullable=true)
      */
-    public function __construct()
+    protected $state = 'writing';
+
+    public function __construct(Experience $experience, int $version, string $title)
     {
-//        $this->version = $this->experience->versions()->count() +1;
+        $this->experience = $experience;
+        $this->version = $version;
+        $this->title = $title;
+        $this->description = '';
     }
 
     public function getId(): ?int
@@ -99,5 +104,25 @@ class ExperienceVersion
     public function __toString()
     {
         return (string) $this->version;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function canBeEdited(): bool
+    {
+        return $this->state !== 'accepted';
+    }
+
+    public function canBePromotedAsLiveVersion(): bool
+    {
+        return $this->state === 'accepted';
     }
 }

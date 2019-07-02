@@ -22,3 +22,24 @@ framework:
                 publish:
                     from: reviewed
                     to:   published
+        experience_versions:
+            marking_store:
+                type: single_state
+                arguments:
+                    - state
+            supports:
+                - App\Entity\ExperienceVersion
+            places:
+                - writing
+                - needs_review
+                - accepted
+            transitions:
+                request_feedback:
+                    from: [writing]
+                    to: needs_review
+                approve:
+                    from: [needs_review]
+                    to:   accepted
+                reject:
+                    from: needs_review
+                    to:   writing

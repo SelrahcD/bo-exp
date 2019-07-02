@@ -3,11 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Experience;
-use App\Form\ExperienceType;
-use App\Repository\ExperienceRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Workflow\Registry;
@@ -25,6 +21,24 @@ class ExperienceController extends EasyAdminController
     public function __construct(Registry $workflows)
     {
         $this->workflows = $workflows;
+    }
+
+    /**
+     * @Route("/{id}/add_version", name="experience_add_version", methods={"GET", "POST"})
+     */
+    public function addVersionAction(Experience $experience): Response
+    {
+        $newVersion = $experience->createNewVersion();
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($newVersion);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('easyadmin', array(
+            'action' => 'edit',
+            'id' => $newVersion->getId(),
+            'entity' => 'ExperienceVersion',
+        ));
     }
 
     /**
