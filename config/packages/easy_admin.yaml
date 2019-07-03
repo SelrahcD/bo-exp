@@ -45,6 +45,7 @@ easy_admin:
             class: App\Entity\ExperienceVersion
             templates:
                 edit: 'experienceVersion/edit.html.twig'
+                show: 'experienceVersion/show.html.twig'
             disabled_actions:
                 ['delete', 'list']
             show:
@@ -52,6 +53,9 @@ easy_admin:
                     - version
                     - title
                     - description
+                actions:
+                    - { name: 'start_new_version', template: 'experienceVersion/_start_new_version_action.html.twig' }
+
             edit:
                 fields:
                     - title

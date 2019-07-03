@@ -1,0 +1,10 @@
+{% extends '@!EasyAdmin/default/show.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+
+    <form id="experience_start_new_version" method="post" action="{{ path('experience_start_new_version', {'id': entity.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('startFrom' ~ entity.id) }}">
+    </form>
+
+{% endblock %}

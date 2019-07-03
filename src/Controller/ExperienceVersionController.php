@@ -81,4 +81,23 @@ final class ExperienceVersionController extends AbstractController
             'entity' => 'ExperienceVersion',
         ));
     }
+
+    /**
+     * @Route("/{id}/startNewVersion", name="experience_start_new_version", methods={"POST"})
+     */
+    public function startFrom(ExperienceVersion $experienceVersion, Request $request): Response
+    {
+        if ($this->isCsrfTokenValid('startFrom'.$experienceVersion->getId(), $request->request->get('_token'))) {
+            $newExperienceVersion = $experienceVersion->startNewVersion();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($newExperienceVersion);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('easyadmin', array(
+            'action' => 'edit',
+            'id' => $newExperienceVersion->getId(),
+            'entity' => 'ExperienceVersion',
+        ));
+
+    }
 }

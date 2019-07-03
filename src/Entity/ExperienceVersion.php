@@ -91,6 +91,15 @@ class ExperienceVersion
         return $this;
     }
 
+    public function startNewVersion(): self
+    {
+        $newExperience = new ExperienceVersion($this->experience, $this->experience->currentVersionCount() + 1, $this->title);
+
+        $newExperience->description = $this->description;
+
+        return $newExperience;
+    }
+
     public function version(): int
     {
         return $this->version;

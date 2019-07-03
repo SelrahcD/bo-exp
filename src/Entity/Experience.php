@@ -144,7 +144,7 @@ class Experience
 
     public function createNewVersion(): ExperienceVersion
     {
-        return new ExperienceVersion($this, $this->versions->count() + 1, $this->Title);
+        return new ExperienceVersion($this, $this->currentVersionCount() + 1, $this->Title);
     }
 
     public function promoteVersion(ExperienceVersion $version)
@@ -157,5 +157,10 @@ class Experience
     public function selectedVersion(): ?ExperienceVersion
     {
         return $this->selectedVersion;
+    }
+
+    public function currentVersionCount(): int
+    {
+       return $this->versions->count();
     }
 }
