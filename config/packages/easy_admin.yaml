@@ -54,6 +54,7 @@ easy_admin:
                     - title
                     - description
                 actions:
+                    - '-edit'
                     - { name: 'start_new_version', template: 'experienceVersion/_start_new_version_action.html.twig' }
 
             edit:
